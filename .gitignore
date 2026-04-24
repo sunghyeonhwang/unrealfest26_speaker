@@ -1,0 +1,30 @@
+# 전체 제외 후 스피커 프로젝트 파일만 포함 (화이트리스트)
+*
+
+# Git 관련
+!.gitignore
+
+# 배포 스크립트
+!deploy_speaker.sh
+
+# 작업 기록
+!Agend.md
+
+# 스피커 모집 페이지 PHP
+!unrealfest26_speaker.php
+!unrealfest_2026_write.php
+!unrealfest_2026_write_trans.php
+!unrealfest_2026_write_proc.php
+!unrealfest_2026_login.php
+!unrealfest_2026_delete_proc.php
+
+# CSS
+!resource/
+resource/*
+!resource/css/
+resource/css/*
+!resource/css/fest_2026_speaker.css
+!resource/css/fest_2026_main.css
+
+# 환경 변수 (절대 커밋 금지)
+.env*
