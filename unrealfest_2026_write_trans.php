@@ -29,17 +29,20 @@
 <script src="/v3/resource/js/common.js"></script>
 <script src="/v3/resource/js/main.js"></script>
 <script>
-  const now = new Date();
+  var isEditMode = <?php echo (!empty($_REQUEST['edit_id'])) ? 'true' : 'false'; ?>;
 
-  const earlyRedirectDate = new Date('2026-01-20T00:00:00');
-  const lateRedirectDate = new Date('2026-04-28T00:00:00');
+  if (!isEditMode) {
+    const now = new Date();
+    const earlyRedirectDate = new Date('2026-01-20T00:00:00');
+    const lateRedirectDate = new Date('2026-04-28T00:00:00');
 
-  if (now < earlyRedirectDate) {
-    alert("아직 신청 기간이 아닙니다.");
-    window.location.href = "https://epiclounge.co.kr/";
-  } else if (now >= lateRedirectDate) {
-    alert("언리얼 페스트 2026 스피커 등록이 마감되었습니다.");
-    window.location.href = "https://epiclounge.co.kr/";
+    if (now < earlyRedirectDate) {
+      alert("아직 신청 기간이 아닙니다.");
+      window.location.href = "https://epiclounge.co.kr/";
+    } else if (now >= lateRedirectDate) {
+      alert("언리얼 페스트 2026 스피커 등록이 마감되었습니다.");
+      window.location.href = "https://epiclounge.co.kr/";
+    }
   }
 </script>
 <!-- container -->
@@ -54,7 +57,15 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 <?php include 'inc/common_header.php'; ?>
 <?
 $RData = "";
-if(isset($_REQUEST['speaker_ph']) && $_REQUEST['speaker_ph'] != ""){
+if(isset($_REQUEST['edit_id']) && $_REQUEST['edit_id'] != ""){
+    // id 기반 조회 (목록에서 선택한 경우)
+    $edit_id = (int)$_REQUEST['edit_id'];
+    $RData = sql_fetch("select * from cb_unreal_2026_speaker_apply where id = '{$edit_id}'");
+    if($RData['id'] == ""){
+        alert('신청내역이 존재하지 않습니다.');
+    }
+} elseif(isset($_REQUEST['speaker_ph']) && $_REQUEST['speaker_ph'] != ""){
+    // 기존 방식 호환 (이메일+전화번호 조회, 1건만 있을 때)
     $RData = sql_fetch("select * from cb_unreal_2026_speaker_apply where speaker_ph = '{$_REQUEST['speaker_ph']}' and speaker_email = '{$_REQUEST['speaker_email']}'");
     if($RData['id'] == ""){
         alert('신청내역이 존재하지 않습니다.');

@@ -219,14 +219,7 @@ $additional_speakers_json = json_encode($additional_speakers, JSON_UNESCAPED_UNI
 $w = clean_xss_tags($_POST["w"] ?? "w");
 if ($w == "w") {
 
-    $row_al = sql_fetch("select count(*) cnt from cb_unreal_2026_speaker_apply where speaker_email = '$speaker_email' ");
-    if($row_al['cnt'] > 0){
-        alert("이미 등록된 이메일주소입니다./There is already a registered email ");
-    }
-    $row_al = sql_fetch("select count(*) cnt from cb_unreal_2026_speaker_apply where speaker_ph = '$speaker_ph'");
-    if($row_al['cnt'] > 0){
-        alert("이미 등록된 전화번호입니다./There is already a registered phone number.");
-    }
+    // 중복 체크 제거 - 동일 이메일/전화번호로 여러 세션 등록 허용
     
     $sql = "INSERT INTO cb_unreal_2026_speaker_apply (
                 speaker_name, speaker_email, speaker_ph, speaker_cp, speaker_cp_j, speaker_pic, speaker_hi, 
