@@ -68,6 +68,11 @@ if ($tableCheck->rowCount() == 0) {
         // 컬럼이 없으면 추가
         $pdo->exec("ALTER TABLE cb_unreal_2026_speaker_apply ADD COLUMN additional_speakers TEXT NULL COMMENT '추가 발표자 정보(JSON)'");
     }
+    // speaker_type 컬럼 존재 여부 확인
+    $columnCheck2 = $pdo->query("SHOW COLUMNS FROM cb_unreal_2026_speaker_apply LIKE 'speaker_type'");
+    if ($columnCheck2->rowCount() == 0) {
+        $pdo->exec("ALTER TABLE cb_unreal_2026_speaker_apply ADD COLUMN speaker_type VARCHAR(20) DEFAULT 'external' COMMENT '모집 유형(external/internal)'");
+    }
 }
 
 // POST 데이터 받기 (XSS 방지)
@@ -160,6 +165,9 @@ $speaker_requests = clean_xss_tags($_POST['speaker_requests'] ?? '');
 $agree_text1 = isset($_POST['agree_text1']) ? 1 : 0;
 $agree_text2 = isset($_POST['agree_text2']) ? 1 : 0;
 
+// 모집 유형 (external/internal)
+$speaker_type = in_array($_POST['speaker_type'] ?? 'external', ['external', 'internal']) ? $_POST['speaker_type'] : 'external';
+
 // 추가 발표자 정보 처리
 $additional_speakers = [];
 if (isset($_POST['additional_speaker_name']) && is_array($_POST['additional_speaker_name'])) {
@@ -225,13 +233,13 @@ if ($w == "w") {
                 industry, product, topic, platform, level, speaker_table, speaker_session, 
                 speaker_takeaway, speaker_target, speaker_key, speaker_reference, demo, does_demo, 
                 speaker_version, pdf_consent, video_consent, speaker_requests, agree_text1, agree_text2, 
-                additional_speakers, created_at
+                additional_speakers, speaker_type, created_at
             ) VALUES (
-                :speaker_name, :speaker_email, :speaker_ph, :speaker_cp, :speaker_cp_j, :speaker_pic, :speaker_hi, 
-                :industry, :product, :topic, :platform, :level, :speaker_table, :speaker_session, 
-                :speaker_takeaway, :speaker_target, :speaker_key, :speaker_reference, :demo, :does_demo, 
-                :speaker_version, :pdf_consent, :video_consent, :speaker_requests, :agree_text1, :agree_text2, 
-                :additional_speakers, NOW()
+                :speaker_name, :speaker_email, :speaker_ph, :speaker_cp, :speaker_cp_j, :speaker_pic, :speaker_hi,
+                :industry, :product, :topic, :platform, :level, :speaker_table, :speaker_session,
+                :speaker_takeaway, :speaker_target, :speaker_key, :speaker_reference, :demo, :does_demo,
+                :speaker_version, :pdf_consent, :video_consent, :speaker_requests, :agree_text1, :agree_text2,
+                :additional_speakers, :speaker_type, NOW()
             )";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
@@ -261,9 +269,14 @@ if ($w == "w") {
         ':speaker_requests'  => $speaker_requests,
         ':agree_text1'       => $agree_text1,
         ':agree_text2'       => $agree_text2,
-        ':additional_speakers' => $additional_speakers_json
+        ':additional_speakers' => $additional_speakers_json,
+        ':speaker_type'      => $speaker_type
     ]);
-    alert("등록이 완료되었습니다. 발표자로 선정되신 분들께는 개별적으로 연락을 드릴 예정입니다. 감사합니다. / Your registration is complete. Those selected as presenters will be contacted individually. Thank you.","https://epiclounge.co.kr/unrealfest26_speaker.php");
+    if ($speaker_type == 'internal') {
+        alert("등록이 완료되었습니다./ Your registration is complete.","https://epiclounge.co.kr/");
+    } else {
+        alert("등록이 완료되었습니다. 발표자로 선정되신 분들께는 개별적으로 연락을 드릴 예정입니다. 감사합니다. / Your registration is complete. Those selected as presenters will be contacted individually. Thank you.","https://epiclounge.co.kr/unrealfest26_speaker.php");
+    }
 } elseif ($w == "u") {
     // 업데이트할 레코드의 id
     $id = (int)$_POST['id'];
@@ -298,7 +311,8 @@ if ($w == "w") {
                 speaker_requests = :speaker_requests,
                 agree_text1 = :agree_text1,
                 agree_text2 = :agree_text2,
-                additional_speakers = :additional_speakers
+                additional_speakers = :additional_speakers,
+                speaker_type = :speaker_type
             WHERE id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
@@ -329,6 +343,7 @@ if ($w == "w") {
         ':agree_text1'       => $agree_text1,
         ':agree_text2'       => $agree_text2,
         ':additional_speakers' => $additional_speakers_json,
+        ':speaker_type'      => $speaker_type,
         ':id'                => $id
     ]);
     alert("등록 정보가 업데이트되었습니다./Your registration information has been updated.","https://epiclounge.co.kr/unrealfest26_speaker.php");

@@ -133,3 +133,41 @@
      * CSS :hover로 간단하게 제어
      * 완벽한 가시성 및 브랜드 정체성 강화
    - 클라이언트 텍스트 수정 사항 반영 완료
+
+---
+
+# 내부 스피커 모집 페이지 작업 계획 (2026-04-27 예정)
+
+## 배경
+- 외부 스피커 모집: 4/27 마감
+- 내부 스피커 모집: 4/28 ~ 6/1
+- 관리자 페이지에서 외부/내부 구분 필요
+
+## 작업 목록
+
+### 1. 외부 모집 마감일 변경
+- **파일**: `unrealfest_2026_write_trans.php`
+- **변경**: `lateRedirectDate`를 `2026-04-28T00:00:00`으로 변경 (4/27 자정까지)
+- **참고**: `unrealfest_2026_write.php`는 사용하지 않으므로 변경 불필요
+
+### 2. 내부 스피커 모집 페이지 생성
+- **파일**: `unrealfest_2026_write_trans_internal.php` (신규 생성)
+- **내용**: 기존 `write_trans.php`와 동일한 폼
+- **마감일**: `2026-06-01`
+- **폼 제출 시**: hidden input으로 `speaker_type = 'internal'` 전달
+
+### 3. DB 및 처리 로직 수정
+- **파일**: `unrealfest_2026_write_proc.php`
+- **DB 변경**: `cb_unreal_2026_speaker_apply` 테이블에 `speaker_type` 컬럼 추가
+  - 타입: `varchar(20)`, 기본값: `external`
+  - 기존 데이터는 자동으로 `external`로 처리
+- **INSERT**: `speaker_type` 필드 저장 추가
+- **UPDATE**: `speaker_type` 필드 저장 추가
+
+### 4. 관리자 페이지 외부/내부 필터 추가
+- **파일**: `adm/2026_event_speaker.php` (서버에만 존재, 로컬에 복사 필요)
+- **변경 내용**:
+  - 전체 / 외부 / 내부 필터 탭 추가
+  - `speaker_type` 컬럼 테이블에 표시
+  - 엑셀 다운로드에도 `speaker_type` 포함
+- **관리자 URL**: `https://epiclounge.co.kr/v3/adm/2026_event_speaker.php`

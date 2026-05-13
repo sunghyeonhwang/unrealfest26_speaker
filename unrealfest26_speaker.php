@@ -70,9 +70,23 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                 <li>발표자 선정 결과 안내: 2026년 5월 내&#40;선정자에 한해 개별 안내&#41;</li>
             </ul>
             <p class="btn_box">
-                <a href="/v3/unrealfest_2026_write_trans.php" class="btn_type1">발표자 지원하기</a>
+                <a href="/v3/unrealfest_2026_write_trans.php" class="btn_type1" id="btn_apply">발표자 지원하기</a>
                 <!-- <a href="/v3/unrealfest_2026_login.php" class="btn_type2" >수정/확인</a> -->
             </p>
+            <script>
+            (function(){
+                var deadline = new Date('2026-04-28T00:00:00');
+                if (new Date() >= deadline) {
+                    var btn = document.getElementById('btn_apply');
+                    btn.textContent = '발표자 모집 종료';
+                    btn.href = 'javascript:void(0)';
+                    btn.onclick = function(e) {
+                        e.preventDefault();
+                        alert('발표자 모집이 종료되었습니다.');
+                    };
+                }
+            })();
+            </script>
         </div>
     </div>
 
@@ -180,7 +194,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         </button>
                         <div class="acc_con">
                             <div class="acc_btn in_btn">
-                            <p>상단에 <a href="https://epiclounge.co.kr/v3/unrealfest_2026_write.php" target="_blank" style="color:#00C9D7">발표자 지원하기</a> 버튼을 클릭한 후, 발표자 및 세션 정보를 입력하고 제출하기를 누르시면 신청이 완료됩니다.</p>
+                            <p>상단에 발표자 지원하기 버튼을 클릭한 후, 발표자 및 세션 정보를 입력하고 제출하기를 누르시면 신청이 완료됩니다.</p>
                             </div>
                         </div>
                     </div>
@@ -215,7 +229,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
                         </button>
                         <div class="acc_con">
                             <div class="acc_btn in_btn">
-                            <p>발표자 모집 마감일인 4월 27일(월) 오후 11시 59분까지  <a href="https://epiclounge.co.kr/v3/unrealfest_2026_login.php" target="_blank" style="color:#00C9D7">수정하기</a> 버튼을 통해 수정하실 수 있습니다.</p>
+                            <p>발표자 모집 마감일인 4월 27일(월) 오후 11시 59분까지 수정하기 버튼을 통해 수정하실 수 있습니다.</p>
                             </div>
                         </div>
                     </div>

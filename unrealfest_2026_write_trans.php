@@ -32,7 +32,7 @@
   const now = new Date();
 
   const earlyRedirectDate = new Date('2026-01-20T00:00:00');
-  const lateRedirectDate = new Date('2026-06-01T00:00:00');
+  const lateRedirectDate = new Date('2026-04-28T00:00:00');
 
   if (now < earlyRedirectDate) {
     alert("아직 신청 기간이 아닙니다.");
@@ -106,6 +106,7 @@ if(isset($_REQUEST['speaker_ph']) && $_REQUEST['speaker_ph'] != ""){
                     <input type="hidden" name="w" value="<?php echo isset($RData['speaker_ph']) ? 'u' : 'w'; ?>" />
                     <input type="hidden" name="id" value="<?php echo isset($RData['id']) ? $RData['id'] : ''; ?>" />
                     <input type="hidden" name="old_speaker_pic" value="<?php echo isset($RData['speaker_pic']) ? $RData['speaker_pic'] : ''; ?>" />
+                    <input type="hidden" name="speaker_type" value="external" />
                     <div class="write_title top_title">
                         <span class="num_text">01</span>
                         <h3 class="h3"><span class="lang-text" data-ko="발표자 정보" data-en="Speaker Info">발표자 정보</span></h3>
