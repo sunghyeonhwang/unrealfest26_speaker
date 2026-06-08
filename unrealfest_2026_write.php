@@ -879,10 +879,10 @@ ex) The presentation includes videos, so clear audio playback is required."><?ph
     });
 
     function filterInput() {
-        var disallowedPattern = /[^A-Za-z0-9가-힣ㄱ-ㅎ\s]/g;
+        var disallowedPattern = /[^A-Za-z0-9가-힣ㄱ-ㅎ\s.,()\/\-&:'"!?]/g;
         var currentValue = textarea.value;
         if (disallowedPattern.test(currentValue)) {
-            alert("한글, 영어, 숫자, 공백만 입력 가능합니다. / Only Korean, English, numbers, and whitespace are allowed.");
+            alert("한글, 영어, 숫자, 공백, 일반 문장부호( . , ( ) / - & : ' \" ! ? )만 입력 가능합니다. / Only Korean, English, numbers, whitespace, and common punctuation are allowed.");
             textarea.value = currentValue.replace(disallowedPattern, '');
         }
     }
@@ -1032,10 +1032,10 @@ ex) The presentation includes videos, so clear audio playback is required."><?ph
     });
 
     function filterBioInput(textarea) {
-        var disallowedPattern = /[^A-Za-z0-9가-힣ㄱ-ㅎ\s]/g;
+        var disallowedPattern = /[^A-Za-z0-9가-힣ㄱ-ㅎ\s.,()\/\-&:'"!?]/g;
         var currentValue = textarea.value;
         if (disallowedPattern.test(currentValue)) {
-            alert("한글, 영어, 숫자, 공백만 입력 가능합니다. / Only Korean, English, numbers, and whitespace are allowed.");
+            alert("한글, 영어, 숫자, 공백, 일반 문장부호( . , ( ) / - & : ' \" ! ? )만 입력 가능합니다. / Only Korean, English, numbers, whitespace, and common punctuation are allowed.");
             textarea.value = currentValue.replace(disallowedPattern, '');
         }
     }

@@ -7,7 +7,12 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ENV_FILE="$SCRIPT_DIR/.env.unrealfest26_speaker"
+# .env 파일 자동 탐색 (.env.unrealfest26_speaker 우선, 없으면 .env)
+if [ -f "$SCRIPT_DIR/.env.unrealfest26_speaker" ]; then
+    ENV_FILE="$SCRIPT_DIR/.env.unrealfest26_speaker"
+else
+    ENV_FILE="$SCRIPT_DIR/.env"
+fi
 
 # .env 로드
 if [ ! -f "$ENV_FILE" ]; then
@@ -16,6 +21,11 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 source "$ENV_FILE"
 
+# 원격 기본 경로 변수 호환 처리 (FTP_REMOTE_BASE 우선, 없으면 FTP_REMOTE_DIR)
+FTP_REMOTE_BASE="${FTP_REMOTE_BASE:-$FTP_REMOTE_DIR}"
+# 끝의 슬래시 제거
+FTP_REMOTE_BASE="${FTP_REMOTE_BASE%/}"
+
 REMOTE_BASE="$FTP_USER@$FTP_HOST:$FTP_REMOTE_BASE"
 
 # 프로젝트 관련 파일 목록
@@ -23,6 +33,7 @@ PHP_FILES=(
     "unrealfest26_speaker.php"
     "unrealfest_2026_write.php"
     "unrealfest_2026_write_trans.php"
+    "unrealfest_2026_write_trans_internal.php"
     "unrealfest_2026_write_proc.php"
     "unrealfest_2026_login.php"
     "unrealfest_2026_delete_proc.php"

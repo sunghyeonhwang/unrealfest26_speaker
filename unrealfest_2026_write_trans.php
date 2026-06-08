@@ -919,10 +919,10 @@ ex3) Design visualization experts interested in importing data from external too
     });
 
     function filterInput() {
-        var disallowedPattern = /[^A-Za-z0-9가-힣ㄱ-ㅎ\s]/g;
+        var disallowedPattern = /[^A-Za-z0-9가-힣ㄱ-ㅎ\s.,()\/\-&:'"!?]/g;
         var currentValue = textarea.value;
         if (disallowedPattern.test(currentValue)) {
-            alert("한글, 영어, 숫자, 공백만 입력 가능합니다. / Only Korean, English, numbers, and whitespace are allowed.");
+            alert("한글, 영어, 숫자, 공백, 일반 문장부호( . , ( ) / - & : ' \" ! ? )만 입력 가능합니다. / Only Korean, English, numbers, whitespace, and common punctuation are allowed.");
             textarea.value = currentValue.replace(disallowedPattern, '');
         }
     }
@@ -1078,10 +1078,10 @@ ex3) Design visualization experts interested in importing data from external too
     });
 
     function filterBioInput(textarea) {
-        var disallowedPattern = /[^A-Za-z0-9가-힣ㄱ-ㅎ\s]/g;
+        var disallowedPattern = /[^A-Za-z0-9가-힣ㄱ-ㅎ\s.,()\/\-&:'"!?]/g;
         var currentValue = textarea.value;
         if (disallowedPattern.test(currentValue)) {
-            alert("한글, 영어, 숫자, 공백만 입력 가능합니다. / Only Korean, English, numbers, and whitespace are allowed.");
+            alert("한글, 영어, 숫자, 공백, 일반 문장부호( . , ( ) / - & : ' \" ! ? )만 입력 가능합니다. / Only Korean, English, numbers, whitespace, and common punctuation are allowed.");
             textarea.value = currentValue.replace(disallowedPattern, '');
         }
     }
